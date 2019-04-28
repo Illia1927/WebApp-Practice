@@ -24,10 +24,16 @@ public class LoginServlet extends HttpServlet {
         String name = req.getParameter("name");
         String password = req.getParameter("password");
         User user = new User(name, password);
-        if (validDate(user).equals("home.jsp")) {
-            req.setAttribute("name", name);
+        users.add(user);
+        System.out.println(users);
+        if (!users.equals(req.getParameter("name"))) {
+            if (validDate(user).equals("home.jsp")) {
+                req.setAttribute("name", name);
+            }
+            req.getRequestDispatcher(validDate(user)).forward(req, resp);
+        }else {
+            req.getRequestDispatcher("wrongPage").forward(req, resp);
         }
-        req.getRequestDispatcher(validDate(user)).forward(req, resp);
     }
 
     private String validDate(User user) {
@@ -37,7 +43,6 @@ public class LoginServlet extends HttpServlet {
                 return "home.jsp";
             }
         }
-        return "home.jsp";
+        return "helloPage.jsp";
     }
 }
-
